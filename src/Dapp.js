@@ -1,3 +1,4 @@
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { Web3Context } from 'web3-hooks'
 import { FaucetContext } from './App'
@@ -6,12 +7,24 @@ function Dapp() {
 
   const [web3State, login] = useContext(Web3Context)
   const faucet = useContext(FaucetContext)
-
+// gestion des getteurs de l'erc20
+const [owner,setOwner] = useState("")
+const [spender, setSpender] = useState("");
+//gestion des erreurs
+  const [error, setError] = useState('')
   const [balance, setBalance] = useState(null)
 
-  /*useEffect(async () => {
 
-  })*/
+
+const handleChange = (e) => {
+  e.target.id === "owner" ? setOwner(e.target.value) : setSpender(e.target.value)
+  console.log(e.target.value)
+}
+const handleClickAllowance = () => {
+  !isAddress(owner) && setError('not a valid address') 
+  !isAddress(spender) && setError("not a valid address"); 
+}
+
 
 const handleClickSendToken = async () => {
   try {
@@ -27,9 +40,9 @@ const handleClickSendToken = async () => {
 
   return (
     <>
-      <p>MetaMask installed: {web3State.isMetaMask ? 'yes' : 'no'}</p>
-      <p>Web3: {web3State.isWeb3 ? 'injected' : 'no-injected'}</p>
-      <p>logged: {web3State.isLogged ? 'yes' : 'no'}</p>
+      <p>MetaMask installed: {web3State.isMetaMask ? "yes" : "no"}</p>
+      <p>Web3: {web3State.isWeb3 ? "injected" : "no-injected"}</p>
+      <p>logged: {web3State.isLogged ? "yes" : "no"}</p>
       {!web3State.isLogged && (
         <>
           <button onClick={login}>login</button>
@@ -41,8 +54,24 @@ const handleClickSendToken = async () => {
       <p>Balance: {web3State.balance}</p>
       <button onClick={handleClickSendToken}>sendToken</button>
       <p>Balance: {balance}</p>
+
+      <label htmlFor="owner">owner</label>
+      <input
+        id="owner"
+        type="text"
+        placeHolder="owner address"
+        onChange={handleChange}
+      ></input>
+      <label htmlFor="spender">spender</label>
+      <input
+        id="spender"
+        type="text"
+        placeHolder="spender address"
+        onChange={handleChange}
+      ></input>
+      <button onclick={handleClickAllowance}>Call</button>
     </>
-  )
+  );
 }
 
 export default Dapp
