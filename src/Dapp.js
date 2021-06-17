@@ -1,4 +1,5 @@
 
+import React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { Web3Context } from 'web3-hooks'
 import { FaucetContext } from './App'
