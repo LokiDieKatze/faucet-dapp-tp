@@ -1,7 +1,8 @@
-import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react'
+
 import { useContext, useEffect, useState } from 'react'
 import { Web3Context } from 'web3-hooks'
 import { FaucetContext } from './App'
+import { Box, Center, Heading, Stack } from "@chakra-ui/react";
 
 function Dapp() {
 
@@ -20,10 +21,10 @@ const handleChange = (e) => {
   e.target.id === "owner" ? setOwner(e.target.value) : setSpender(e.target.value)
   console.log(e.target.value)
 }
-const handleClickAllowance = () => {
-  !isAddress(owner) && setError('not a valid address') 
-  !isAddress(spender) && setError("not a valid address"); 
-}
+// const handleClickAllowance = () => {
+//   !isAddress(owner) && setError('not a valid address') 
+//   !isAddress(spender) && setError("not a valid address"); 
+// }
 
 
 const handleClickSendToken = async () => {
@@ -40,6 +41,19 @@ const handleClickSendToken = async () => {
 
   return (
     <>
+      <Box h="100vh" bg="black">
+        <Center bg="salmon" h="10vh">
+          <Heading color="white">SAGISTAMI FAUCET</Heading>
+        </Center>
+        <Center h="80vh">
+          <Box w="20%" h="10%" bg="salmon">
+
+          </Box>
+        </Center>
+        <Center pos="relative" bg="salmon" h="10vh">
+          <Heading color="white">Footer</Heading>
+        </Center>
+      </Box>
       <p>MetaMask installed: {web3State.isMetaMask ? "yes" : "no"}</p>
       <p>Web3: {web3State.isWeb3 ? "injected" : "no-injected"}</p>
       <p>logged: {web3State.isLogged ? "yes" : "no"}</p>
@@ -69,7 +83,7 @@ const handleClickSendToken = async () => {
         placeHolder="spender address"
         onChange={handleChange}
       ></input>
-      <button onclick={handleClickAllowance}>Call</button>
+      <button onclick={handleClickSendToken}>Call</button>
     </>
   );
 }
