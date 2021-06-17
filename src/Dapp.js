@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Web3Context } from "web3-hooks";
 import { FaucetContext } from "./App";
 import {
@@ -25,9 +25,10 @@ function Dapp() {
   const [owner, setOwner] = useState("");
   const [spender, setSpender] = useState("");
   //gestion des erreurs
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
-
+  console.log(owner);
+  console.log(spender);
   const handleChange = (e) => {
     e.target.id === "owner"
       ? setOwner(e.target.value)
@@ -81,7 +82,7 @@ function Dapp() {
                 For buy 100 SGSA click on "Token" !
               </Text>
             </Box>
-            <Image src="logo_large.png"/>
+            <Image src="logo_large.png" />
           </Center>
           <Center pos="relative" bg="salmon" h="10vh">
             <Heading color="white">Footer</Heading>
