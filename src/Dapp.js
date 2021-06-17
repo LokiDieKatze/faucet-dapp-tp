@@ -15,6 +15,7 @@ import {
   Text,
   Spacer,
   Image,
+  HStack
 } from "@chakra-ui/react";
 
 function Dapp() {
@@ -58,7 +59,7 @@ function Dapp() {
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
-            <Image src="logo_small.png" alt="SGSA" />
+            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png" boxSize="100px" alt="SGSA" />
             <Spacer />
             <Heading color="white">SAGISTAMI FAUCET</Heading>
             <Spacer />
@@ -72,27 +73,35 @@ function Dapp() {
             </Button>
             <Spacer />
           </Center>
+          <Spacer />
+          
           <Center h="80vh">
-            <Box w="60%" h="40%">
+          <HStack >
+            <Box w="70%" h="50%" m={5} p={4}>
               <Text color="white" fontSize="6xl">
                 {" "}
                 Welcome to our Faucet
               </Text>
               <Text color="white" fontSize="2xl">
-                For buy 100 SGSA click on "Token" !
+                To buy 100 SGSA click on "SendToken" !
               </Text>
+              <Button bg="#3399FF" m={5} onClick={handleClickSendToken}>
+              sendToken
+            </Button>
             </Box>
-            <Image src="logo_large.png" />
+            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png"/>
+            </HStack>
           </Center>
           <Center pos="relative" bg="salmon" h="10vh">
-            <Heading color="white">Footer</Heading>
+          <Text color="white" as="samp">🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine Benmissi 🦏</Text>
           </Center>
+          
         </Box>
       ) : (
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
-            <Image src="logo_small.png" alt="SGSA" />
+            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png" boxSize="100px" alt="SGSA" />
             <Spacer />
             <Heading color="white">SAGISTAMI FAUCET</Heading>
             <Spacer />
@@ -113,7 +122,7 @@ function Dapp() {
               templateColumns="repeat(5, 1fr)"
               gap={4}
             ></Grid>
-            <GridItem rowSpan={2} colSpan={1} bg="lightGrey" p={5} rounded="md">
+            <GridItem rowSpan={2} colSpan={1} bg="lightGrey" p={5} rounded="md" m={4}>
               <p>MetaMask installed: {web3State.isMetaMask ? "yes" : "no"}</p>
               <p>Web3: {web3State.isWeb3 ? "injected" : "no-injected"}</p>
               <p>logged: {web3State.isLogged ? "yes" : "no"}</p>
@@ -127,16 +136,16 @@ function Dapp() {
               <p>account: {web3State.account}</p>
               <p>Balance: {web3State.balance}</p>
             </GridItem>
-            <Button bg="#3399FF" m={5} onClick={handleClickSendToken}>
-              sendToken
-            </Button>
+            
             <GridItem rowSpan={2} colSpan={1}>
-              <Text color="white" as="samp">
+              <Text color="#181818" rounded="full" bg="lightGrey" p={2} as="samp">
                 Balance: {balance}
               </Text>
               <Stack spacing={4}>
+              <Text mt={5} color="lightGrey" >View allowance :</Text>
                 <InputGroup>
-                  <InputLeftAddon bg="salmon" children="owner" />
+                  
+                  <InputLeftAddon bg="salmon" children="owner"/>
                   <Input
                     type="text"
                     id="owner"
@@ -158,7 +167,7 @@ function Dapp() {
             </GridItem>
           </Center>
           <Center pos="relative" bg="salmon" h="10vh">
-            <Heading color="white">Footer</Heading>
+            <Text color="white" as="samp">🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine Benmissi 🦏</Text>
           </Center>
         </Box>
       )}
