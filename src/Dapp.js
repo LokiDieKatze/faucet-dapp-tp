@@ -24,7 +24,6 @@ function Dapp() {
   const [erc20, setErc20] = useState(false);
   // gestion des getteurs de l'erc20
   const [owner, setOwner] = useState("");
-  const [spender, setSpender] = useState("");
   const [decimals, setDecimals] = useState("");
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
@@ -35,13 +34,6 @@ function Dapp() {
   const [balance, setBalance] = useState(null);
   const toast = useToast()
   console.log(owner);
-  console.log(spender);
-  const handleChange = (e) => {
-    e.target.id === "owner"
-    ? setOwner(e.target.value)
-    : setSpender(e.target.value);
-    console.log(e.target.value);
-  };
   // const handleClickAllowance = () => {
     //   !isAddress(owner) && setError('not a valid address')
   //   !isAddress(spender) && setError("not a valid address");
@@ -160,8 +152,8 @@ function Dapp() {
             <Heading color="white">SAGISTAMI FAUCET</Heading>
             <Spacer />
             <Button
-              bg="#181818"
-              color="grey"
+              bg="#06bd92"
+              color="#181818"
               onClick={() => setErc20(true)}
               pe={5}
             >
@@ -248,8 +240,8 @@ function Dapp() {
               </Box>
             </SimpleGrid>
             <SimpleGrid column={2} spacing={11}>
-              <HStack spacing="1rem">
-                <Box>
+              <HStack spacing="2rem">
+                <Box ms={7}>
                   <InputGroup w="9rem">
                     <Input
                       type="text"
