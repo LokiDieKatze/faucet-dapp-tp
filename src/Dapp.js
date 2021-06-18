@@ -8,7 +8,6 @@ import {
   Button,
   GridItem,
   Input,
-  InputLeftAddon,
   InputGroup,
   Text,
   Spacer,
@@ -30,6 +29,7 @@ function Dapp() {
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
+   const [allowance, setAllowance] = useState("");
   //gestion des erreurs
   //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
@@ -38,12 +38,12 @@ function Dapp() {
   console.log(spender);
   const handleChange = (e) => {
     e.target.id === "owner"
-      ? setOwner(e.target.value)
-      : setSpender(e.target.value);
+    ? setOwner(e.target.value)
+    : setSpender(e.target.value);
     console.log(e.target.value);
   };
   // const handleClickAllowance = () => {
-  //   !isAddress(owner) && setError('not a valid address')
+    //   !isAddress(owner) && setError('not a valid address')
   //   !isAddress(spender) && setError("not a valid address");
   // }
 
@@ -70,99 +70,7 @@ function Dapp() {
       })
     }
   };
-
-  const handleClickDecimals = async () => {
-    try {
-      const dec = await faucet.decimals();
-      setDecimals(dec);
-    } catch (e) {
-      setDecimals("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickName = async () => {
-    try {
-      const nam = await faucet.name();
-      setName(nam);
-    } catch (e) {
-      setName("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickOwner = async () => {
-    try {
-      const own = await faucet.owner();
-      setOwner(own.toString());
-    } catch (e) {
-      setOwner("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickSymbol = async () => {
-    try {
-      const sym = await faucet.symbol();
-      setSymbol(sym);
-    } catch (e) {
-      setSymbol("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickTotalSupply = async () => {
-    try {
-      const tot = await faucet.totalSupply();
-      setTotalSupply(tot.toString());
-    } catch (e) {
-      setTotalSupply("Error");
-      console.log(e.message);
-    }
-  };
-
-  const handleClickDecimals = async () => {
-    try {
-      const dec = await faucet.decimals();
-      setDecimals(dec);
-    } catch (e) {
-      setDecimals("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickName = async () => {
-    try {
-      const nam = await faucet.name();
-      setName(nam);
-    } catch (e) {
-      setName("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickOwner = async () => {
-    try {
-      const own = await faucet.owner();
-      setOwner(own.toString());
-    } catch (e) {
-      setOwner("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickSymbol = async () => {
-    try {
-      const sym = await faucet.symbol();
-      setSymbol(sym);
-    } catch (e) {
-      setSymbol("Error");
-      console.log(e.message);
-    }
-  };
-  const handleClickTotalSupply = async () => {
-    try {
-      const tot = await faucet.totalSupply();
-      setTotalSupply(tot.toString());
-    } catch (e) {
-      setTotalSupply("Error");
-      console.log(e.message);
-    }
-  };
-
+  
   useEffect(() => {
     // si faucet est pas null alors
     if (faucet) {
@@ -179,6 +87,63 @@ function Dapp() {
       };
     }
   }, [faucet, web3State.account]);
+  
+  const handleClickDecimals = async () => {
+    try {
+      const dec = await faucet.decimals();
+      setDecimals(dec);
+    } catch (e) {
+      setDecimals("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickName = async () => {
+    try {
+      const nam = await faucet.name();
+      setName(nam);
+    } catch (e) {
+      setName("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickOwner = async () => {
+    try {
+      const own = await faucet.owner();
+      setOwner(own.toString());
+    } catch (e) {
+      setOwner("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickSymbol = async () => {
+    try {
+      const sym = await faucet.symbol();
+      setSymbol(sym);
+    } catch (e) {
+      setSymbol("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickTotalSupply = async () => {
+    try {
+      const tot = await faucet.totalSupply();
+      setTotalSupply(tot.toString());
+    } catch (e) {
+      setTotalSupply("Error");
+      console.log(e.message);
+    }
+  };
+    const handleClickAllowance = async () => {
+      try {
+        const all = await faucet.allowance();
+        setAllowance(all);
+      } catch (e) {
+        setAllowance("Error");
+        console.log(e.message);
+      }
+    };
+
+
 
   return (
     <>
@@ -245,7 +210,7 @@ function Dapp() {
             <Button
               bg="#06bd92"
               color="#181818"
-              onClick={() => setErc20(true)}
+              onClick={() => setErc20(false)}
               pe={5}
             >
               Faucet
@@ -269,7 +234,7 @@ function Dapp() {
                 <p>Balance: {web3State.balance}</p>
               </GridItem>
 
-              <Box >
+              <Box>
                 <Text
                   color="#181818"
                   rounded="full"
@@ -402,30 +367,27 @@ function Dapp() {
                   </InputRightElement>
                 </InputGroup>
               </Box>
-
-              <Box w="25rem">
-                <Text mt={5} color="lightGrey">
-                  View allowance :
-                </Text>
-                <InputGroup>
-                  <InputLeftAddon bg="salmon" children="owner" />
+              <Box w="22rem">
+                <InputGroup w="22rem" ps={7}>
                   <Input
                     type="text"
-                    id="owner"
-                    placeholder="address owner"
-                    onChange={handleChange}
+                    id="allowanxe"
+                    placeholder={allowance}
+                    isDisabled
                   />
-                </InputGroup>
-              </Box>
-              <Box w="25rem">
-                <InputGroup>
-                  <InputLeftAddon bg="salmon" children="spender" />
-                  <Input
-                    type="text"
-                    id="spender"
-                    placeholder="address spender"
-                    onChange={handleChange}
-                  />
+                  <InputRightElement children="allowance" width="4.5rem">
+                    <Button
+                      bg="#3399FF"
+                      h="2.5rem"
+                      size="ml"
+                      p={2}
+                      children="totalSupply"
+                      onClick={handleClickAllowance}
+                      fontSize="sm"
+                    >
+                      view allowance
+                    </Button>
+                  </InputRightElement>
                 </InputGroup>
               </Box>
             </SimpleGrid>
