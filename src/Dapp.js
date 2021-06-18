@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState} from "react";
 import { Web3Context } from "web3-hooks";
 import { FaucetContext } from "./App";
 import {
@@ -16,6 +16,7 @@ import {
   HStack,
   SimpleGrid,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 
 function Dapp() {
@@ -32,6 +33,7 @@ function Dapp() {
   //gestion des erreurs
   //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
+  const toast = useToast()
   console.log(owner);
   console.log(spender);
   const handleChange = (e) => {
@@ -51,9 +53,21 @@ function Dapp() {
       await faucet.sendToken();
       const tx = await faucet.balanceOf();
       setBalance(tx.toString());
+      toast({
+        title: 'Confirmed transaction',
+        description: `You have received 100 SGSA`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
       console.log(balance);
     } catch (e) {
-      console.error(e);
+      toast({
+        title: 'Transaction refused, wait 3 days to ask more SGSA',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
     }
   };
 
@@ -192,13 +206,14 @@ function Dapp() {
                 <p>Balance: {web3State.balance}</p>
               </GridItem>
 
-              <Box w="12rem">
+              <Box >
                 <Text
                   color="#181818"
                   rounded="full"
                   bg="lightGrey"
                   p={2}
                   as="samp"
+                  w="22rem"
                 >
                   Balance of SGSA : {balance}
                 </Text>
