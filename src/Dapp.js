@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Web3Context } from "web3-hooks";
 import { FaucetContext } from "./App";
 import {
@@ -28,7 +28,7 @@ function Dapp() {
   const [decimals, setDecimals] = useState("");
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
-  const [totalSupply,setTotalSupply] = useState("")
+  const [totalSupply, setTotalSupply] = useState("");
   //gestion des erreurs
   //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
@@ -103,9 +103,26 @@ function Dapp() {
     }
   };
 
+  useEffect(() => {
+    // si faucet est pas null alors
+    if (faucet) {
+      const cb = (account, amount, timeLapse) => {
+        if (account.toLowerCase() === web3State.account.toLowerCase()) {
+          console.log(`test`);
+          console.log(`${account} bought ${amount}, at ${timeLapse}`);
+        }
+      };
+      faucet.on("Bought", cb);
+      return () => {
+        // arreter d'ecouter lorsque le component sera unmount
+        faucet.off("Bought", cb);
+      };
+    }
+  }, [faucet, web3State.account]);
+
   return (
     <>
-      {erc20 ? (
+      {!erc20 ? (
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
@@ -120,7 +137,7 @@ function Dapp() {
             <Button
               bg="#181818"
               color="grey"
-              onClick={() => setErc20(false)}
+              onClick={() => setErc20(true)}
               pe={5}
             >
               Token
@@ -168,7 +185,7 @@ function Dapp() {
             <Button
               bg="#181818"
               color="grey"
-              onClick={() => setErc20(true)}
+              onClick={() => setErc20(false)}
               pe={5}
             >
               Faucet
