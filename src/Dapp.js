@@ -15,7 +15,7 @@ import {
   Text,
   Spacer,
   Image,
-  HStack
+  HStack,
 } from "@chakra-ui/react";
 
 function Dapp() {
@@ -25,6 +25,10 @@ function Dapp() {
   // gestion des getteurs de l'erc20
   const [owner, setOwner] = useState("");
   const [spender, setSpender] = useState("");
+  const [decimals, setDecimals] = useState("");
+  const [name, setName] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [totalSupply,setTotalSupply] = useState("")
   //gestion des erreurs
   //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
@@ -53,13 +57,63 @@ function Dapp() {
     }
   };
 
+  const handleClickDecimals = async () => {
+    try {
+      const dec = await faucet.decimals();
+      setDecimals(dec);
+    } catch (e) {
+      setDecimals("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickName = async () => {
+    try {
+      const nam = await faucet.name();
+      setName(nam);
+    } catch (e) {
+      setName("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickOwner = async () => {
+    try {
+      const own = await faucet.owner();
+      setOwner(own.toString());
+    } catch (e) {
+      setOwner("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickSymbol = async () => {
+    try {
+      const sym = await faucet.symbol();
+      setSymbol(sym);
+    } catch (e) {
+      setSymbol("Error");
+      console.log(e.message);
+    }
+  };
+  const handleClickTotalSupply = async () => {
+    try {
+      const tot = await faucet.totalSupply();
+      setTotalSupply(tot.toString());
+    } catch (e) {
+      setTotalSupply("Error");
+      console.log(e.message);
+    }
+  };
+
   return (
     <>
       {erc20 ? (
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
-            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png" boxSize="100px" alt="SGSA" />
+            <Image
+              src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png"
+              boxSize="100px"
+              alt="SGSA"
+            />
             <Spacer />
             <Heading color="white">SAGISTAMI FAUCET</Heading>
             <Spacer />
@@ -74,34 +128,40 @@ function Dapp() {
             <Spacer />
           </Center>
           <Spacer />
-          
+
           <Center h="80vh">
-          <HStack >
-            <Box w="70%" h="50%" m={5} p={4}>
-              <Text color="white" fontSize="6xl">
-                {" "}
-                Welcome to our Faucet
-              </Text>
-              <Text color="white" fontSize="2xl">
-                To buy 100 SGSA click on "SendToken" !
-              </Text>
-              <Button bg="#3399FF" m={5} onClick={handleClickSendToken}>
-              sendToken
-            </Button>
-            </Box>
-            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png"/>
+            <HStack>
+              <Box w="70%" h="50%" m={5} p={4}>
+                <Text color="white" fontSize="6xl">
+                  {" "}
+                  Welcome to our Faucet
+                </Text>
+                <Text color="white" fontSize="2xl">
+                  To buy 100 SGSA click on "SendToken" !
+                </Text>
+                <Button bg="#3399FF" m={5} onClick={handleClickSendToken}>
+                  sendToken
+                </Button>
+              </Box>
+              <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png" />
             </HStack>
           </Center>
           <Center pos="relative" bg="salmon" h="10vh">
-          <Text color="white" as="samp">🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine Benmissi 🦏</Text>
+            <Text color="white" as="samp">
+              🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine
+              Benmissi 🦏
+            </Text>
           </Center>
-          
         </Box>
       ) : (
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
-            <Image src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png" boxSize="100px" alt="SGSA" />
+            <Image
+              src="https://static.rfstat.com/renderforest/images/v2/logo-homepage/embleme_3.png"
+              boxSize="100px"
+              alt="SGSA"
+            />
             <Spacer />
             <Heading color="white">SAGISTAMI FAUCET</Heading>
             <Spacer />
@@ -122,7 +182,14 @@ function Dapp() {
               templateColumns="repeat(5, 1fr)"
               gap={4}
             ></Grid>
-            <GridItem rowSpan={2} colSpan={1} bg="lightGrey" p={5} rounded="md" m={4}>
+            <GridItem
+              rowSpan={2}
+              colSpan={1}
+              bg="lightGrey"
+              p={5}
+              rounded="md"
+              m={4}
+            >
               <p>MetaMask installed: {web3State.isMetaMask ? "yes" : "no"}</p>
               <p>Web3: {web3State.isWeb3 ? "injected" : "no-injected"}</p>
               <p>logged: {web3State.isLogged ? "yes" : "no"}</p>
@@ -136,16 +203,23 @@ function Dapp() {
               <p>account: {web3State.account}</p>
               <p>Balance: {web3State.balance}</p>
             </GridItem>
-            
+
             <GridItem rowSpan={2} colSpan={1}>
-              <Text color="#181818" rounded="full" bg="lightGrey" p={2} as="samp">
+              <Text
+                color="#181818"
+                rounded="full"
+                bg="lightGrey"
+                p={2}
+                as="samp"
+              >
                 Balance: {balance}
               </Text>
               <Stack spacing={4}>
-              <Text mt={5} color="lightGrey" >View allowance :</Text>
+                <Text mt={5} color="lightGrey">
+                  View allowance :
+                </Text>
                 <InputGroup>
-                  
-                  <InputLeftAddon bg="salmon" children="owner"/>
+                  <InputLeftAddon bg="salmon" children="owner" />
                   <Input
                     type="text"
                     id="owner"
@@ -163,11 +237,35 @@ function Dapp() {
                     onChange={handleChange}
                   />
                 </InputGroup>
+
+                <Button bg="#3399FF" m={5} onClick={handleClickDecimals}>
+                  view decimals
+                </Button>
+                <Input type="text" id="decimals" placeholder={decimals} />
+                <Button bg="#3399FF" m={5} onClick={handleClickName}>
+                  view name
+                </Button>
+                <Input type="text" id="name" placeholder={name} />
+                <Button bg="#3399FF" m={5} onClick={handleClickOwner}>
+                  view owner
+                </Button>
+                <Input type="text" id="spender" placeholder={owner} />
+                <Button bg="#3399FF" m={5} onClick={handleClickSymbol}>
+                  view symbol
+                </Button>
+                <Input type="text" id="spender" placeholder={symbol} />
+                <Button bg="#3399FF" m={5} onClick={handleClickTotalSupply}>
+                  siew total supply
+                </Button>
+                <Input type="text" id="supply" placeholder={totalSupply} />
               </Stack>
             </GridItem>
           </Center>
           <Center pos="relative" bg="salmon" h="10vh">
-            <Text color="white" as="samp">🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine Benmissi 🦏</Text>
+            <Text color="white" as="samp">
+              🦏 Made by Sarah Marques, Guillaume Bézie, Stella Soler and Amine
+              Benmissi 🦏
+            </Text>
           </Center>
         </Box>
       )}
