@@ -1,4 +1,4 @@
-import { useContext, useState} from "react";
+import { useContext, useState, useEffect } from "react";
 import { Web3Context } from "web3-hooks";
 import { FaucetContext } from "./App";
 import {
@@ -8,7 +8,6 @@ import {
   Button,
   GridItem,
   Input,
-  InputLeftAddon,
   InputGroup,
   Text,
   Spacer,
@@ -25,25 +24,18 @@ function Dapp() {
   const [erc20, setErc20] = useState(false);
   // gestion des getteurs de l'erc20
   const [owner, setOwner] = useState("");
-  const [spender, setSpender] = useState("");
   const [decimals, setDecimals] = useState("");
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
+   const [allowance, setAllowance] = useState("");
   //gestion des erreurs
   //const [error, setError] = useState("");
   const [balance, setBalance] = useState(null);
   const toast = useToast()
   console.log(owner);
-  console.log(spender);
-  const handleChange = (e) => {
-    e.target.id === "owner"
-      ? setOwner(e.target.value)
-      : setSpender(e.target.value);
-    console.log(e.target.value);
-  };
   // const handleClickAllowance = () => {
-  //   !isAddress(owner) && setError('not a valid address')
+    //   !isAddress(owner) && setError('not a valid address')
   //   !isAddress(spender) && setError("not a valid address");
   // }
 
@@ -70,7 +62,24 @@ function Dapp() {
       })
     }
   };
-
+  
+  useEffect(() => {
+    // si faucet est pas null alors
+    if (faucet) {
+      const cb = (account, amount, timeLapse) => {
+        if (account.toLowerCase() === web3State.account.toLowerCase()) {
+          console.log(`test`);
+          console.log(`${account} bought ${amount}, at ${timeLapse}`);
+        }
+      };
+      faucet.on("Bought", cb);
+      return () => {
+        // arreter d'ecouter lorsque le component sera unmount
+        faucet.off("Bought", cb);
+      };
+    }
+  }, [faucet, web3State.account]);
+  
   const handleClickDecimals = async () => {
     try {
       const dec = await faucet.decimals();
@@ -116,10 +125,21 @@ function Dapp() {
       console.log(e.message);
     }
   };
+    const handleClickAllowance = async () => {
+      try {
+        const all = await faucet.allowance();
+        setAllowance(all);
+      } catch (e) {
+        setAllowance("Error");
+        console.log(e.message);
+      }
+    };
+
+
 
   return (
     <>
-      {erc20 ? (
+      {!erc20 ? (
         <Box h="100vh" bg="#181818">
           <Center bg="salmon" h="10vh">
             <Spacer />
@@ -134,7 +154,7 @@ function Dapp() {
             <Button
               bg="#06bd92"
               color="#181818"
-              onClick={() => setErc20(false)}
+              onClick={() => setErc20(true)}
               pe={5}
             >
               Token
@@ -182,7 +202,7 @@ function Dapp() {
             <Button
               bg="#06bd92"
               color="#181818"
-              onClick={() => setErc20(true)}
+              onClick={() => setErc20(false)}
               pe={5}
             >
               Faucet
@@ -206,7 +226,7 @@ function Dapp() {
                 <p>Balance: {web3State.balance}</p>
               </GridItem>
 
-              <Box >
+              <Box>
                 <Text
                   color="#181818"
                   rounded="full"
@@ -220,8 +240,8 @@ function Dapp() {
               </Box>
             </SimpleGrid>
             <SimpleGrid column={2} spacing={11}>
-              <HStack spacing="1rem">
-                <Box>
+              <HStack spacing="2rem">
+                <Box ms={7}>
                   <InputGroup w="9rem">
                     <Input
                       type="text"
@@ -339,30 +359,27 @@ function Dapp() {
                   </InputRightElement>
                 </InputGroup>
               </Box>
-
-              <Box w="25rem">
-                <Text mt={5} color="lightGrey">
-                  View allowance :
-                </Text>
-                <InputGroup>
-                  <InputLeftAddon bg="salmon" children="owner" />
+              <Box w="22rem">
+                <InputGroup w="22rem" ps={7}>
                   <Input
                     type="text"
-                    id="owner"
-                    placeholder="address owner"
-                    onChange={handleChange}
+                    id="allowanxe"
+                    placeholder={allowance}
+                    isDisabled
                   />
-                </InputGroup>
-              </Box>
-              <Box w="25rem">
-                <InputGroup>
-                  <InputLeftAddon bg="salmon" children="spender" />
-                  <Input
-                    type="text"
-                    id="spender"
-                    placeholder="address spender"
-                    onChange={handleChange}
-                  />
+                  <InputRightElement children="allowance" width="4.5rem">
+                    <Button
+                      bg="#3399FF"
+                      h="2.5rem"
+                      size="ml"
+                      p={2}
+                      children="totalSupply"
+                      onClick={handleClickAllowance}
+                      fontSize="sm"
+                    >
+                      view allowance
+                    </Button>
+                  </InputRightElement>
                 </InputGroup>
               </Box>
             </SimpleGrid>
