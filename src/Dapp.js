@@ -178,9 +178,9 @@ function Dapp() {
           <Center h="80vh">
             <SimpleGrid column={2} spacing={10}>
               <GridItem bg="lightGrey" p={5} rounded="md" me={6}>
-                <p>MetaMask installed: {web3State.isMetaMask ? "yes" : "no"}</p>
-                <p>Web3: {web3State.isWeb3 ? "injected" : "no-injected"}</p>
-                <p>logged: {web3State.isLogged ? "yes" : "no"}</p>
+                <p>MetaMask installed: {web3State.isMetaMask ? "✔️" : "✖️"}</p>
+                <p>Web3: {web3State.isWeb3 ? "✔️" : "no-injected"}</p>
+                <p>logged: {web3State.isLogged ? "✔️" : "✖️"}</p>
                 {!web3State.isLogged && (
                   <>
                     <button onClick={login}>login</button>
