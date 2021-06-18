@@ -22,22 +22,16 @@ function Dapp() {
   const [web3State, login] = useContext(Web3Context);
   const faucet = useContext(FaucetContext);
   const [erc20, setErc20] = useState(false);
-  // gestion des getteurs de l'erc20
+
   const [owner, setOwner] = useState("");
   const [decimals, setDecimals] = useState("");
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [totalSupply, setTotalSupply] = useState("");
    const [allowance, setAllowance] = useState("");
-  //gestion des erreurs
-  //const [error, setError] = useState("");
+
   const [balance, setBalance] = useState(null);
-  const toast = useToast()
-  console.log(owner);
-  // const handleClickAllowance = () => {
-    //   !isAddress(owner) && setError('not a valid address')
-  //   !isAddress(spender) && setError("not a valid address");
-  // }
+   const toast = useToast();
 
   const handleClickSendToken = async () => {
     try {
@@ -68,8 +62,15 @@ function Dapp() {
     if (faucet) {
       const cb = (account, amount, timeLapse) => {
         if (account.toLowerCase() === web3State.account.toLowerCase()) {
-          console.log(`test`);
           console.log(`${account} bought ${amount}, at ${timeLapse}`);
+                    toast({
+                      title: "Event Bought",
+                      description: `${account} bought ${amount}, at ${timeLapse}`,
+                      status: "info",
+                      position: "top-right",
+                      duration: 9000,
+                      isClosable: true,
+                    });
         }
       };
       faucet.on("Bought", cb);
